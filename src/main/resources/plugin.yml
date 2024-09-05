@@ -16,3 +16,7 @@ commands:
     description: Where am I?
     usage: /whereami
     permission: flat_earth.whereami
+  osmtile:
+    description: What OSM tile am I currently in?
+    usage: /osmtile
+    permission: flat_earth.osmtile

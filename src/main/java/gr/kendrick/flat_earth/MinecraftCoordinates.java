@@ -6,6 +6,17 @@ public class MinecraftCoordinates implements Coordinates {
     public final int minecraftX;
     public final int minecraftZ;
 
+    // Minecraft coordinates:
+    //
+    //            NORTH = -Z
+    //                /|\
+    //                 |
+    // WEST = -X <-----+-----> +X = EAST
+    //                 |
+    //                \|/
+    //            SOUTH = +Z
+    //
+
     public MinecraftCoordinates(int minecraftX, int minecraftZ) {
         this.minecraftX = minecraftX;
         this.minecraftZ = minecraftZ;
@@ -46,13 +57,20 @@ public class MinecraftCoordinates implements Coordinates {
 
         int totalWorldWidthInBlocks = tileSizeInPx * noOfTilesAlongOneAxis; // = also the total world height
 
-        // Transform (minecraftX, minecraftZ) coordinates into a (x,y) coordinate system with non-negative coordinates
-        //   and the origin in the upper-left corner:
-        // +----------------------------------> x
-        // |
-        // |
-        // |
-        // y
+        // Transform (minecraftX, minecraftZ) coordinates:
+        //                   |
+        //                   |
+        //  -----------------+-----------------> +x
+        //                   |
+        //                  \|/
+        //                  +z
+        //
+        // into a (x,y) coordinate system with non-negative coordinates and the origin in the upper-left corner:
+        //  +----------------------------------> +x
+        //  |
+        //  |
+        // \|/
+        // +y
         int x = (totalWorldWidthInBlocks/2) + this.minecraftX; // transforms (-w/2, +w/2) range into (0, w) range
         int y = (totalWorldWidthInBlocks/2) + this.minecraftZ;
 

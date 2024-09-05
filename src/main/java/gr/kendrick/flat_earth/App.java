@@ -16,6 +16,7 @@ public class App extends JavaPlugin {
         this.getCommand("tpcoords").setExecutor(new CommandTpCoords());
         this.getCommand("tpplace").setExecutor(new CommandTpPlace());
         this.getCommand("whereami").setExecutor(new CommandWhereAmI());
+        this.getCommand("osmtile").setExecutor(new CommandOsmTile());
 
         config = this.getConfig();
         // OSM zoom level 17 has 1.194 meters per pixel (on the Equator)
@@ -25,7 +26,7 @@ public class App extends JavaPlugin {
         // the latitude, for 45° this would be:
         // 1.194 * cos(45°) = 1.194 * 0.707 = 0.844 meters per pixel
         // => see: https://wiki.openstreetmap.org/wiki/Zoom_levels
-        config.addDefault("osm_zoom_level", 17);
+        config.addDefault("osm_zoom_level", 0); // TODO: set back to 17
         // For more tile server URLs,
         // see: https://wiki.openstreetmap.org/wiki/Raster_tile_providers
         config.addDefault("osm_tile_server_url", "https://a.tile.openstreetmap.de/${z}/${x}/${y}.png");

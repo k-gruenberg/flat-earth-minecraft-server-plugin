@@ -1,5 +1,7 @@
 package gr.kendrick.flat_earth;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -59,12 +61,11 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
         // Generate a flat terrain at y = 64:
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                chunkData.setBlock(x, 64, z, getBlockAt(chunkX, chunkZ, x, z)); // Top layer
-                chunkData.setBlock(x, 63, z, Material.DIRT); // Dirt layer
-                chunkData.setBlock(x, 62, z, Material.DIRT); // Dirt layer
-                for (int y = 0; y <= 61; y++) {
+                chunkData.setBlock(x, 64, z, getBlockAt(chunkX, chunkZ, x, z)); // Top layer (Terracotta)
+                for (int y = 1; y <= 63; y++) {
                     chunkData.setBlock(x, y, z, Material.STONE); // Stone layer
                 }
+                chunkData.setBlock(x, 0, z, Material.BEDROCK); // Bedrock layer
             }
         }
 
@@ -83,36 +84,44 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
         colorToMaterialMap = new HashMap<Color, Material>();
         colorToMaterialMap.put(Color.BLACK, Material.BLACK_TERRACOTTA);
         colorToMaterialMap.put(Color.WHITE, Material.WHITE_TERRACOTTA);
+        colorToMaterialMap.put(Color.GRAY, Material.GRAY_TERRACOTTA);
         colorToMaterialMap.put(Color.RED, Material.RED_TERRACOTTA);
-        colorToMaterialMap.put(Color.GREEN, Material.GREEN_TERRACOTTA);
-        colorToMaterialMap.put(Color.BLUE, Material.BLUE_TERRACOTTA);
+        colorToMaterialMap.put(new Color(0x90, 0xEE, 0x90), Material.LIME_TERRACOTTA); // CSS "LightGreen"
+        colorToMaterialMap.put(new Color(0, 0x64, 0), Material.GREEN_TERRACOTTA); // CSS "DarkGreen"
+        colorToMaterialMap.put(new Color(0xAD, 0xD8, 0xE6), Material.LIGHT_BLUE_TERRACOTTA); // CSS "LightBlue"
+        colorToMaterialMap.put(new Color(0, 0, 0x8B), Material.BLUE_TERRACOTTA); // CSS "DarkBlue"
         colorToMaterialMap.put(Color.PINK, Material.PINK_TERRACOTTA);
         colorToMaterialMap.put(Color.CYAN, Material.CYAN_TERRACOTTA);
         colorToMaterialMap.put(Color.ORANGE, Material.ORANGE_TERRACOTTA);
         colorToMaterialMap.put(Color.YELLOW, Material.YELLOW_TERRACOTTA);
     }
 
-    private int colorDistance(Color color1, Color color2) {
+    public static double colorDistance(Color color1, Color color2) {
         if (color1 == null || color2 == null) {
             return Integer.MAX_VALUE;
         }
-        return Math.abs(color1.getRed() - color2.getRed())
-                + Math.abs(color1.getGreen() - color2.getGreen())
-                + Math.abs(color1.getBlue() - color2.getBlue());
+        return Math.pow(color1.getRed() - color2.getRed(), 2)
+                + Math.pow(color1.getGreen() - color2.getGreen(), 2)
+                + Math.pow(color1.getBlue() - color2.getBlue(), 2);
     }
 
-    private Material getBlockAt(int minecraftX, int minecraftZ) {
-        Color trueColor = getColorAt(minecraftX, minecraftZ);
+    public static Color closestAvailableColor(Color trueColor) {
         Color closestColor = null;
         for (Color color : colorToMaterialMap.keySet()) {
             if (colorDistance(trueColor, color) < colorDistance(trueColor, closestColor)) {
                 closestColor = color; // update current knowledge of closestColor to trueColor
             }
         }
+        return closestColor;
+    }
+
+    private Material getBlockAt(int minecraftX, int minecraftZ) {
+        Color trueColor = getColorAt(minecraftX, minecraftZ);
+        Color closestColor = closestAvailableColor(trueColor);
         return colorToMaterialMap.get(closestColor);
     }
 
-    private Color getColorAt(int minecraftX, int minecraftZ) {
+    public Color getColorAt(int minecraftX, int minecraftZ) {
         MinecraftCoordinates minecraftCoordinates = new MinecraftCoordinates(minecraftX, minecraftZ);
         OSMCoordinates osmCoordinates = minecraftCoordinates.osm(this.zoomLevel, this.tileSizeInPx);
 

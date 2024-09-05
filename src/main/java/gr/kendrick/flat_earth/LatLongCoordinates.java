@@ -24,7 +24,7 @@ public class LatLongCoordinates implements Coordinates {
         // cf. https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         double x = ((this.longitude + 180.0) / 360.0) * Math.pow(2, zoomLevel);
         double y = (1.0 - Math.log(Math.tan(this.latitude * (Math.PI/180.0)) + 1/Math.cos(this.latitude * (Math.PI/180.0))) / Math.PI)
-                * Math.pow(2, zoomLevel);
+                * Math.pow(2, zoomLevel-1);
 
         int osmTileX = (int)Math.floor(x);
         int osmTileY = (int)Math.floor(y);

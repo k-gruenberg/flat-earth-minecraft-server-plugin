@@ -49,6 +49,7 @@ public class OSMTile {
     }
 
     private void downloadImage() throws IOException, InterruptedException {
+        System.out.println("Downloading " + this.tileServerURL + " ...");
         // 1) --> https://stackoverflow.com/questions/5882005/how-to-download-image-from-any-web-page-in-java
         // 2) --> https://stackoverflow.com/questions/3360712/java-load-image-from-urlconnection
         URL url = new URL(this.tileServerURL); // see 1)
@@ -121,9 +122,9 @@ public class OSMTile {
 
     public Color getColorRelativeToLowerLeftOrigin(int x, int y) {
         // Say the height of this image is 256, then:
-        // height - (y=0) = 256
-        // height - (y=256) = 0
-        return this.getColorRelativeToUpperLeftOrigin(x, this.image.getHeight() - y);
+        // (height-1) - (y=0)   = 255
+        // (height-1) - (y=255) = 0
+        return this.getColorRelativeToUpperLeftOrigin(x, (this.image.getHeight()-1) - y);
     }
 
     public String getTileServerURL() {
