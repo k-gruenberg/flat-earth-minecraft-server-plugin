@@ -26,13 +26,16 @@ public class App extends JavaPlugin {
         // the latitude, for 45° this would be:
         // 1.194 * cos(45°) = 1.194 * 0.707 = 0.844 meters per pixel
         // => see: https://wiki.openstreetmap.org/wiki/Zoom_levels
-        config.addDefault("osm_zoom_level", 0); // TODO: set back to 17
+        config.addDefault("osm_zoom_level", 17);
         // For more tile server URLs,
         // see: https://wiki.openstreetmap.org/wiki/Raster_tile_providers
         config.addDefault("osm_tile_server_url", "https://a.tile.openstreetmap.de/${z}/${x}/${y}.png");
+        config.addDefault("nominatim_url", "https://nominatim.openstreetmap.org/search?q={QUERY}&format=xml&limit=1");
+        config.addDefault("nominatim_reverse_url", "https://nominatim.openstreetmap.org/reverse?format=xml&lat={lat}&lon={long}&zoom=5&addressdetails=0");
         config.addDefault("osm_tile_size_in_px", 256);
         config.addDefault("user_agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36");
+        config.addDefault("user_agent_nominatim", "Mozilla/5.0 (Java HttpURLConnection; FlatEarth Minecraft server plugin)");
         config.addDefault("world_name", "flat_earth");
         config.options().copyDefaults(true);
         saveConfig();

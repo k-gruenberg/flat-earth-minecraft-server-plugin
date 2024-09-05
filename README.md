@@ -25,6 +25,43 @@ Also supports smaller than 1:1 scales!
 
 ![Minecraft Earth at zoom level 0](/zoom_level_17.png)
 
+## Commands
+
+### /whereami
+
+Usage:
+```
+/whereami
+```
+Example output:
+```
+You're currently @
+Place name: New York, United States
+Latitude: 40.70287885589866
+Longitude: -74.01384115219116
+```
+
+### /tpcoords
+
+Usage:
+```
+/tpcoords <latitude> <longitude>
+```
+Example usage:
+```
+/tpcoords 40.702875 -74.013841
+```
+
+### /tpplace
+
+Usage:
+```
+/tpplace <place_name>
+```
+Example usage:
+```
+/tpplace New York City
+```
 
 ## Releasing Plugin
 

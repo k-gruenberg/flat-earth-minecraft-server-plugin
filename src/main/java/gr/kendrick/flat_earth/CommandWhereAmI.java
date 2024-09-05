@@ -19,8 +19,11 @@ public class CommandWhereAmI implements CommandExecutor {
                 int zoomLevel = App.config.getInt("osm_zoom_level");
                 int tileSizeInPx = App.config.getInt("osm_tile_size_in_px");
                 LatLongCoordinates latLongCoords = minecraftCoords.latLong(zoomLevel, tileSizeInPx);
-                player.sendMessage("You're currently @ lat=" + latLongCoords.latitude +
-                        ", lon=" + latLongCoords.longitude); // ToDo: use reverse search API and print name of place
+                String placeName = NominatimAPI.reverseGeocode(latLongCoords.latitude, latLongCoords.longitude);
+                player.sendMessage("You're currently @\n" +
+                        "Place name: " + placeName + "\n" +
+                        "Latitude: " + latLongCoords.latitude + "\n" +
+                        "Longitude: " + latLongCoords.longitude);
                 return true;
             }
         }
