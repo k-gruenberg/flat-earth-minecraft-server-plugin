@@ -113,48 +113,19 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
     }
 
     private Color getColorAt(int minecraftX, int minecraftZ) {
-        // For zoom level 1 there are 4 tiles (z,x,y given):
-        // ___________________________________
-        // |  (1,0,0)        |  (1,1,0)      |
-        // |  North America  |  Asia         |
-        // |                 |               |
-        // |-----------------+----------------  // <--- we want the Minecraft origin (0,0) to be at the little +
-        // |  (1,0,1)        |  (1,1,1)      |
-        // |  South America  |  Australia    |
-        // |                 |               |
-        // |__________________________________
+        MinecraftCoordinates minecraftCoordinates = new MinecraftCoordinates(minecraftX, minecraftZ);
+        OSMCoordinates osmCoordinates = minecraftCoordinates.osm(this.zoomLevel, this.tileSizeInPx);
 
-        int noOfTilesAlongOneAxis = (int) Math.pow(2, this.zoomLevel);
-        // zoom level | noOfTilesAlongOneAxis
-        // -----------+----------------------
-        //  0         | 1
-        //  1         | 2 (see above)
-        //  2         | 4
-        // ...        | ...
-        // 20         | 1.048.576
-        // => cf. https://wiki.openstreetmap.org/wiki/Zoom_levels
-
-        int totalWorldWidthInBlocks = this.tileSizeInPx * noOfTilesAlongOneAxis; // = also the total world height
-
-        // Transform (minecraftX, minecraftZ) coordinates into a (x,y) coordinate system with non-negative coordinates
-        //   and the origin in the upper-left corner:
-        // +----------------------------------> x
-        // |
-        // |
-        // |
-        // y
-        int x = (totalWorldWidthInBlocks/2) + minecraftX; // transforms (-w/2, +w/2) range into (0, w) range
-        int y = (totalWorldWidthInBlocks/2) + minecraftZ;
-
-        if (x < 0 || y < 0 || x >= totalWorldWidthInBlocks || y >= totalWorldWidthInBlocks) {
+        if (osmCoordinates == null) {
             return Color.BLACK; // ToDo: allow user to set border of world behavior (e.g., void instead)
         }
 
-        int osmTileX = x / this.tileSizeInPx;
-        int osmTileY = y / this.tileSizeInPx;
-        int pixelXWithinTile = x % this.tileSizeInPx;
-        int pixelYWithinTile = y % this.tileSizeInPx;
-        return new OSMTile(this.tileServerTemplateURL, userAgent, zoomLevel, osmTileX, osmTileY)
+        int osmTileX = osmCoordinates.osmTileX;
+        int osmTileY = osmCoordinates.osmTileY;
+        int pixelXWithinTile = osmCoordinates.pixelXWithinTile;
+        int pixelYWithinTile = osmCoordinates.pixelYWithinTile;
+
+        return new OSMTile(this.tileServerTemplateURL, userAgent, this.zoomLevel, osmTileX, osmTileY)
                 .getColorRelativeToUpperLeftOrigin(pixelXWithinTile, pixelYWithinTile);
         // We assume each OSMTile to have dimensions 256x256 pixel where 1 pixel == 1 Minecraft block.
     }

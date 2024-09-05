@@ -3,3 +3,16 @@ main: gr.kendrick.flat_earth.App
 description: FlatEarth
 version: ${project.version}
 api-version: 1.13
+commands:
+  tpcoords:
+    description: Teleport to a given latitude and longitude.
+    usage: /tpcoords <latitude> <longitude>
+    permission: flat_earth.tpcoords
+  tpplace:
+    description: Teleport to a given place name.
+    usage: /tpplace <place_name>
+    permission: flat_earth.tpplace
+  whereami:
+    description: Where am I?
+    usage: /whereami
+    permission: flat_earth.whereami

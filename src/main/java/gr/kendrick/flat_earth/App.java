@@ -7,11 +7,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Optional;
 
 public class App extends JavaPlugin {
+    public static FileConfiguration config;
+
     @Override
     public void onEnable() {
         getLogger().info("Enabling FlatEarth plugin...");
 
-        FileConfiguration config = this.getConfig();
+        this.getCommand("tpcoords").setExecutor(new CommandTpCoords());
+        this.getCommand("tpplace").setExecutor(new CommandTpPlace());
+        this.getCommand("whereami").setExecutor(new CommandWhereAmI());
+
+        config = this.getConfig();
         // OSM zoom level 17 has 1.194 meters per pixel (on the Equator)
         // and therefore most closely creates a 1:1 scale.
         // Note that this is only true for 256-pixel wide tiles and at
