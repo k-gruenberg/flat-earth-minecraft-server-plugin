@@ -79,7 +79,7 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
         return getBlockAt(minecraftX, minecraftZ);
     }
 
-    private static final HashMap<Color, Material> colorToMaterialMap;
+    private static final HashMap<Color, Material> colorToMaterialMap; // ToDo: allow user to custom set this via config
     static {
         colorToMaterialMap = new HashMap<Color, Material>();
         colorToMaterialMap.put(Color.BLACK, Material.BLACK_TERRACOTTA);
