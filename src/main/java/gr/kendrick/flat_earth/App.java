@@ -16,6 +16,7 @@ public class App extends JavaPlugin {
         this.getCommand("tpcoords").setExecutor(new CommandTpCoords());
         this.getCommand("tpplace").setExecutor(new CommandTpPlace());
         this.getCommand("whereami").setExecutor(new CommandWhereAmI());
+        this.getCommand("whereis").setExecutor(new CommandWhereIs());
         this.getCommand("osmtile").setExecutor(new CommandOsmTile());
 
         config = this.getConfig();

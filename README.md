@@ -41,6 +41,13 @@ Latitude: 40.70287885589866
 Longitude: -74.01384115219116
 ```
 
+### /whereis
+
+Usage:
+```
+/whereis <player>
+```
+
 ### /tpcoords
 
 Usage:

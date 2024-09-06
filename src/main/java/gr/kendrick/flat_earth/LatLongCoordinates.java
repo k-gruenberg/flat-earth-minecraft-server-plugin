@@ -11,7 +11,12 @@ public class LatLongCoordinates implements Coordinates {
 
     @Override
     public MinecraftCoordinates minecraft(int zoomLevel, int tileSizeInPx) {
-        return this.osm(zoomLevel, tileSizeInPx).minecraft(zoomLevel, tileSizeInPx);
+        OSMCoordinates osmCoordinates = this.osm(zoomLevel, tileSizeInPx);
+        if (osmCoordinates == null) {
+            return null;
+        } else {
+            return osmCoordinates.minecraft(zoomLevel, tileSizeInPx);
+        }
     }
 
     @Override

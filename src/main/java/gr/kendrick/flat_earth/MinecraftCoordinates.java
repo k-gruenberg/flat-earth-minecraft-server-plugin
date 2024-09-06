@@ -29,7 +29,12 @@ public class MinecraftCoordinates implements Coordinates {
 
     @Override
     public LatLongCoordinates latLong(int zoomLevel, int tileSizeInPx) {
-        return this.osm(zoomLevel, tileSizeInPx).latLong(zoomLevel, tileSizeInPx);
+        OSMCoordinates osmCoordinates = this.osm(zoomLevel, tileSizeInPx);
+        if (osmCoordinates == null) {
+            return null;
+        } else {
+            return osmCoordinates.latLong(zoomLevel, tileSizeInPx);
+        }
     }
 
     @Override
