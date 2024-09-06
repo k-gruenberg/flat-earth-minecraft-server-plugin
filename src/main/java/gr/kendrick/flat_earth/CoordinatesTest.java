@@ -3,7 +3,7 @@ package gr.kendrick.flat_earth;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CoordinatesTest { // ToDo: write test cases to find bug(s)
+public class CoordinatesTest {
     final int tileSizeInPx = 256;
 
     @Test
