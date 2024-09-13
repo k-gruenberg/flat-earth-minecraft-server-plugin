@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public class App extends JavaPlugin {
     public static FileConfiguration config;
+    public static ColorToMaterialMappings colorToMaterialMappings;
 
     @Override
     public void onEnable() {
@@ -38,8 +39,16 @@ public class App extends JavaPlugin {
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36");
         config.addDefault("user_agent_nominatim", "Mozilla/5.0 (Java HttpURLConnection; FlatEarth Minecraft server plugin)");
         config.addDefault("world_name", "flat_earth");
+        config.addDefault("color_to_material_mappings", ColorToMaterialMappings.DEFAULT);
+        config.addDefault("ground_level", 64);
+        config.addDefault("underground_block", "STONE");
         config.options().copyDefaults(true);
         saveConfig();
+
+        colorToMaterialMappings = new ColorToMaterialMappings(
+                Optional.ofNullable(config.getString("color_to_material_mappings"))
+                        .orElse(ColorToMaterialMappings.DEFAULT)
+        );
 
         String worldName = Optional.ofNullable(config.getString("world_name")).orElse("flat_earth");
         int osmZoomLevel = config.getInt("osm_zoom_level");

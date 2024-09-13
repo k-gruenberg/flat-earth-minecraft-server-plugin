@@ -9,10 +9,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.awt.Color;
 
 public class FlatEarthWorldGenerator extends ChunkGenerator {
@@ -58,12 +55,19 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
             }
         }
 
-        // Generate a flat terrain at y = 64:
+        // Generate a flat terrain:
+        int groundLevel = App.config.getInt("ground_level"); // Default: 64
+        String undergroundBlock = App.config.getString("underground_block");
+        Material undergroundMaterial = Optional.ofNullable(Material.getMaterial(
+                Optional.ofNullable(undergroundBlock).orElse("STONE"))).orElse(Material.STONE);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                chunkData.setBlock(x, 64, z, getBlockAt(chunkX, chunkZ, x, z)); // Top layer (Terracotta)
-                for (int y = 1; y <= 63; y++) {
-                    chunkData.setBlock(x, y, z, Material.STONE); // Stone layer
+                // Generate top layer (Terracotta blocks at default settings):
+                chunkData.setBlock(x, groundLevel, z, getBlockAt(chunkX, chunkZ, x, z));
+
+                // Generate all layers below / underground:
+                for (int y = 1; y < groundLevel; y++) {
+                    chunkData.setBlock(x, y, z, undergroundMaterial); // Stone layer (default)
                 }
                 chunkData.setBlock(x, 0, z, Material.BEDROCK); // Bedrock layer
             }
@@ -79,46 +83,9 @@ public class FlatEarthWorldGenerator extends ChunkGenerator {
         return getBlockAt(minecraftX, minecraftZ);
     }
 
-    private static final HashMap<Color, Material> colorToMaterialMap; // ToDo: allow user to custom set this via config
-    static {
-        colorToMaterialMap = new HashMap<Color, Material>();
-        colorToMaterialMap.put(Color.BLACK, Material.BLACK_TERRACOTTA);
-        colorToMaterialMap.put(Color.WHITE, Material.WHITE_TERRACOTTA);
-        colorToMaterialMap.put(Color.GRAY, Material.GRAY_TERRACOTTA);
-        colorToMaterialMap.put(Color.RED, Material.RED_TERRACOTTA);
-        colorToMaterialMap.put(new Color(0x90, 0xEE, 0x90), Material.LIME_TERRACOTTA); // CSS "LightGreen"
-        colorToMaterialMap.put(new Color(0, 0x64, 0), Material.GREEN_TERRACOTTA); // CSS "DarkGreen"
-        colorToMaterialMap.put(new Color(0xAD, 0xD8, 0xE6), Material.LIGHT_BLUE_TERRACOTTA); // CSS "LightBlue"
-        colorToMaterialMap.put(new Color(0, 0, 0x8B), Material.BLUE_TERRACOTTA); // CSS "DarkBlue"
-        colorToMaterialMap.put(Color.PINK, Material.PINK_TERRACOTTA);
-        colorToMaterialMap.put(Color.CYAN, Material.CYAN_TERRACOTTA);
-        colorToMaterialMap.put(Color.ORANGE, Material.ORANGE_TERRACOTTA);
-        colorToMaterialMap.put(Color.YELLOW, Material.YELLOW_TERRACOTTA);
-    }
-
-    public static double colorDistance(Color color1, Color color2) {
-        if (color1 == null || color2 == null) {
-            return Integer.MAX_VALUE;
-        }
-        return Math.pow(color1.getRed() - color2.getRed(), 2)
-                + Math.pow(color1.getGreen() - color2.getGreen(), 2)
-                + Math.pow(color1.getBlue() - color2.getBlue(), 2);
-    }
-
-    public static Color closestAvailableColor(Color trueColor) {
-        Color closestColor = null;
-        for (Color color : colorToMaterialMap.keySet()) {
-            if (colorDistance(trueColor, color) < colorDistance(trueColor, closestColor)) {
-                closestColor = color; // update current knowledge of closestColor to trueColor
-            }
-        }
-        return closestColor;
-    }
-
     private Material getBlockAt(int minecraftX, int minecraftZ) {
         Color trueColor = getColorAt(minecraftX, minecraftZ);
-        Color closestColor = closestAvailableColor(trueColor);
-        return colorToMaterialMap.get(closestColor);
+        return App.colorToMaterialMappings.get(trueColor);
     }
 
     public Color getColorAt(int minecraftX, int minecraftZ) {

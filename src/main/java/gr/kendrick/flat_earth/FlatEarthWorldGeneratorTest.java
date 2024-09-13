@@ -8,43 +8,6 @@ import java.awt.*;
 
 public class FlatEarthWorldGeneratorTest {
     @Test
-    public void testColorDistance() {
-        Assertions.assertEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.BLACK, Color.BLACK));
-        Assertions.assertEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.WHITE, Color.WHITE));
-        Assertions.assertEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.RED, Color.RED));
-        Assertions.assertEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.GREEN, Color.GREEN));
-        Assertions.assertEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.BLUE, Color.BLUE));
-
-        Assertions.assertNotEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.BLACK, Color.WHITE));
-        Assertions.assertNotEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.WHITE, Color.BLACK));
-        Assertions.assertNotEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.RED, Color.GREEN));
-        Assertions.assertNotEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.RED, Color.BLUE));
-        Assertions.assertNotEquals(0.0, FlatEarthWorldGenerator.colorDistance(Color.GREEN, Color.BLUE));
-
-        Assertions.assertTrue(FlatEarthWorldGenerator.colorDistance(Color.RED, Color.ORANGE)
-                                < FlatEarthWorldGenerator.colorDistance(Color.RED, Color.GREEN));
-
-        Assertions.assertTrue(FlatEarthWorldGenerator.colorDistance(Color.BLUE, Color.CYAN)
-                < FlatEarthWorldGenerator.colorDistance(Color.BLUE, Color.RED));
-    }
-
-    @Test
-    public void testClosestAvailableColor() {
-        Assertions.assertEquals(Color.BLACK, FlatEarthWorldGenerator.closestAvailableColor(Color.BLACK));
-        Assertions.assertEquals(Color.WHITE, FlatEarthWorldGenerator.closestAvailableColor(Color.WHITE));
-        Assertions.assertEquals(Color.RED, FlatEarthWorldGenerator.closestAvailableColor(Color.RED));
-
-        Assertions.assertEquals(Color.BLACK, FlatEarthWorldGenerator.closestAvailableColor(new Color(1,1,1)));
-        Assertions.assertEquals(Color.WHITE, FlatEarthWorldGenerator.closestAvailableColor(new Color(250,250,250)));
-        Assertions.assertEquals(Color.RED, FlatEarthWorldGenerator.closestAvailableColor(new Color(250,0,0)));
-
-        Color osmOcean = new Color(170, 211, 223);
-        Color osmLand = new Color(242, 239, 233);
-        Assertions.assertNotEquals(FlatEarthWorldGenerator.closestAvailableColor(osmOcean),
-                FlatEarthWorldGenerator.closestAvailableColor(osmLand)); // !!! VERY IMPORTANT CHECK !!!
-    }
-
-    @Test
     public void testGetColorAt() {
         // __________
         // |        |

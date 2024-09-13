@@ -28,7 +28,8 @@ public class CommandTpPlace implements CommandExecutor {
                 int tileSizeInPx = App.config.getInt("osm_tile_size_in_px");
                 MinecraftCoordinates minecraftCoords = placeCoordinates.minecraft(zoomLevel, tileSizeInPx);
                 World world = player.getWorld(); // assume that the player is already in the correct world
-                Location location = new Location(world, minecraftCoords.minecraftX, 66, minecraftCoords.minecraftZ);
+                int y = App.config.getInt("ground_level") + 2;
+                Location location = new Location(world, minecraftCoords.minecraftX, y, minecraftCoords.minecraftZ);
                 player.teleport(location);
             }
         } else {

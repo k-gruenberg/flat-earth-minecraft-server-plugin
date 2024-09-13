@@ -70,6 +70,26 @@ Example usage:
 /tpplace New York City
 ```
 
+## Config
+
+Default configuration values (`config.yml`):
+
+```
+osm_zoom_level: 17
+osm_tile_server_url: https://a.tile.openstreetmap.de/${z}/${x}/${y}.png
+nominatim_url: https://nominatim.openstreetmap.org/search?q={QUERY}&format=xml&limit=1
+nominatim_reverse_url: https://nominatim.openstreetmap.org/reverse?format=xml&lat={lat}&lon={long}&zoom=5&addressdetails=0
+osm_tile_size_in_px: 256
+user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
+  like Gecko) Chrome/127.0.0.0 Safari/537.36
+user_agent_nominatim: Mozilla/5.0 (Java HttpURLConnection; FlatEarth Minecraft server
+  plugin)
+world_name: flat_earth
+color_to_material_mappings: '#000000=BLACK_TERRACOTTA,#ffffff=WHITE_TERRACOTTA,#808080=GRAY_TERRACOTTA,#ff0000=RED_TERRACOTTA,#90ee90=LIME_TERRACOTTA,#006400=GREEN_TERRACOTTA,#add8e6=LIGHT_BLUE_TERRACOTTA,#00008b=BLUE_TERRACOTTA,#ffafaf=PINK_TERRACOTTA,#00ffff=CYAN_TERRACOTTA,#ffc800=ORANGE_TERRACOTTA,#ffff00=YELLOW_TERRACOTTA'
+ground_level: 64
+underground_block: STONE
+```
+
 ## Releasing Plugin
 
     mvn clean package
